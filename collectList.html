@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <title>サンプル</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>defy item loot list</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+</head>
+
+<body class="bg-dark-subtle">
+  <div class="container bg-dark-subtle">
+    <div class="row">
+      <div class="col">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <button id="btnReflesh" type="button" class="btn btn-primary">再表示</button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <!--テーブル生成位置-->
+        <div id='maintable'></div>
+        <div id="loading_area" class="d-flex justify-content-center">
+          <div class="spinner-grow" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+    crossorigin="anonymous"></script>
+  <script>
+//document.querySelectorAll('div.css-1cjoh21 > div.css-1nyzkl5 > div.css-ld3vj4 > div.css-dessuh > div.css-sq5no7 > div.css-gzddkn > div.chakra-stack.css-nbferm > a.chakra-link.css-1ddnqr0:last-child').forEach(function(s) { console.log(s); });
+//[...document.querySelectorAll('div.css-1cjoh21 > div.css-1nyzkl5 > div.css-ld3vj4 > div.css-dessuh > div.css-sq5no7 > div.css-gzddkn > div.chakra-stack.css-nbferm > a.chakra-link.css-1ddnqr0:last-child')].forEach(function(s) { console.log(s.href + ' | ' + s.firstChild.innerHTML); })
+//https://webapi.prod.defylabs.xyz/nfts/0x0b5cfed5efb6f831468b8b5b5321b71825a2aee0/0000000000000000000000000000000000000000000000000000000000002710.json
+
+const M_DefyLoot = [{"id":"10001","name":"Refined Metal"}
+,{"id":"10000","name":"Scrap Metal"}
+,{"id":"90112","name":"Common Echoes of the Unknown Box"}
+,{"id":"20016","name":"Blueprint: 2.4Ghz Radio C1"}
+,{"id":"20008","name":"Blueprint: Ducted Fans C1"}
+,{"id":"42008","name":"Mid Visor - silver green"}
+,{"id":"90014","name":"Cyber Quest Key"}
+,{"id":"20024","name":"Blueprint: FSMD System on Chip C1"}
+,{"id":"90022","name":"$0.50 Voucher - $0.50 引換券"}
+,{"id":"90087","name":"Common Cyber Stars Box"}
+,{"id":"90088","name":"Rare Cyber Stars Box"}
+,{"id":"90111","name":"Echoes of the Unknown Key"}
+,{"id":"90062","name":"Common Cyber Raiders Box"}
+,{"id":"90089","name":"Epic Cyber Stars Box"}
+,{"id":"42013","name":"Moth Visor - silver green"}
+,{"id":"10005","name":"Lithium"}
+,{"id":"90063","name":"Rare Cyber Raiders Box"}
+,{"id":"41008","name":"Cyber hannya mouth - silver green"}
+,{"id":"41009","name":"Cyber hannya mouth - silver pink"}
+,{"id":"42007","name":"Mid Visor - pink silver"}
+,{"id":"90061","name":"Cyber Raiders Key"}
+,{"id":"40007","name":"Psycircuit helmet - pink silver"}
+,{"id":"41004","name":"Botic mouth - silver pink"}
+,{"id":"5000","name":"Capacitor - Small"}
+,{"id":"10002","name":"Pure Metal"}
+,{"id":"52100","name":"Pulse Scanner Mk I"}
+,{"id":"10008","name":"Silicon"}
+,{"id":"90000","name":"Ancient Artifact Blueprint"}
+,{"id":"90003","name":"Artifact Side B"}
+,{"id":"40012","name":"Solid helmet - pink silver"}
+,{"id":"40013","name":"Solid helmet - silver green"}
+,{"id":"41007","name":"Cyber hannya mouth - pink silver"}
+,{"id":"90113","name":"Rare Echoes of the Unknown Box"}
+,{"id":"10004","name":"Copper Wire"}
+,{"id":"90007","name":"Drone Raffle Ticket"}
+,{"id":"90079","name":"Cyber Raiders Beacon Box"}
+,{"id":"20031","name":"Blueprint: Refined Metal"}
+,{"id":"40019","name":"Squadron helmet - silver pink"}
+,{"id":"41017","name":"Ventilated mouth - pink silver"}
+,{"id":"90059","name":"$10 Voucher"}
+,{"id":"3","name":"Retrieval Drone"}
+,{"id":"42014","name":"Moth Visor - silver pink"}
+,{"id":"5001","name":"Capacitor - Medium"}
+,{"id":"50006","name":"Cosmetic Crate"}
+,{"id":"90043","name":"Blueprint: Cyber Quest Keys"}
+,{"id":"20000","name":"Blueprint: Lithium Polymer Cell C1"}
+,{"id":"42005","name":"Mid Visor - gold green"}
+,{"id":"20001","name":"Blueprint: Lithium Polymer Cell C2"}
+,{"id":"20009","name":"Blueprint: Ducted Fans C2"}
+,{"id":"40018","name":"Squadron helmet - silver green"}
+,{"id":"41014","name":"Robo mouth - silver pink"}
+,{"id":"55003","name":"Season 0 - Team r0ku"}
+,{"id":"90049","name":"Battle Pass: Cyber Quest Deux"}
+,{"id":"20035","name":"Blueprint: Beacon Mk I Beast"}
+,{"id":"90004","name":"Artifact Side C"}
+,{"id":"52006","name":"Beacon Claw"}
+,{"id":"52004","name":"Beacon Antenna"}
+,{"id":"52005","name":"Beacon Thorax"}
+,{"id":"10003","name":"Rare-Earth Magnet"}
+,{"id":"41013","name":"Robo mouth - silver green"}
+,{"id":"5002","name":"Capacitor - Large"}
+,{"id":"40010","name":"Solid helmet - gold green"}
+,{"id":"41010","name":"Robo mouth - gold green"}
+,{"id":"90016","name":"Rare Cyber Box"}
+,{"id":"41000","name":"Botic mouth - gold green"}
+,{"id":"90015","name":"Common Cyber Box"}
+,{"id":"41011","name":"Robo mouth - gold pink"}
+,{"id":"41001","name":"Botic mouth - gold pink"}
+,{"id":"41003","name":"Botic mouth - silver green"}
+,{"id":"42009","name":"Mid Visor - silver pink"}
+,{"id":"40011","name":"Solid helmet - gold pink"}
+,{"id":"52000","name":"Beacon Mk II"}
+,{"id":"90121","name":"EoU Data Drive Case (A)"}
+,{"id":"90124","name":"EoU Memory Chip (D)"}
+,{"id":"42010","name":"Moth Visor - gold green"}
+,{"id":"42011","name":"Moth Visor - gold pink"}
+,{"id":"90098","name":"Cyber Star Shard B"}
+,{"id":"0","name":"0"}
+,{"id":"20028","name":"Blueprint: Standard Drone Chassis"}
+,{"id":"40002","name":"Matrixware helmet - pink silver"}
+,{"id":"40008","name":"Psycircuit helmet - silver green"}
+,{"id":"40015","name":"Squadron helmet - gold green"}
+,{"id":"41005","name":"Cyber hannya mouth - gold green"}
+,{"id":"90136","name":"5th Day Login Card"}
+,{"id":"40001","name":"Matrixware helmet - gold pink"}
+,{"id":"50008","name":"Refined Metal Case"}
+,{"id":"41012","name":"Robo mouth - pink silver"}
+,{"id":"90114","name":"Epic Echoes of the Unknown Box"}
+,{"id":"90064","name":"Epic Cyber Raiders Box"}
+,{"id":"30024","name":"FSMD System on Chip C1"}
+,{"id":"90125","name":"EoU Micro Processor (E)"}
+,{"id":"90129","name":"EoU Data Drive Components Crate (Locked)"}
+,{"id":"30016","name":"2.4Ghz Radio C1"}
+,{"id":"90010","name":"Golden Data Drive"}
+,{"id":"41006","name":"Cyber hannya mouth - gold pink"}
+,{"id":"90002","name":"Artifact Side A"}
+,{"id":"90005","name":"Artifact Side D"}
+,{"id":"41019","name":"Ventilated mouth - silver pink"}
+,{"id":"90115","name":"150 $DEFY Echoes of the Unknown Voucher (Locked)"}
+,{"id":"90118","name":"150 $DEFY Echoes of the Unknown Voucher"}
+,{"id":"40000","name":"Matrixware helmet - gold green"}
+,{"id":"42004","name":"Full HUD Visor - silver pink"}
+,{"id":"42017","name":"Sleek Visor - pink silver"}
+,{"id":"50010","name":"Calendar Reward Crate"}
+,{"id":"50011","name":"Beacon Box"}
+,{"id":"90067","name":"150 $DEFY Voucher"}
+,{"id":"42000","name":"Full HUD Visor - gold green"}
+,{"id":"30000","name":"Lithium Polymer Cell C1"}
+,{"id":"52002","name":"Beacon Mk II Beast"}
+,{"id":"40003","name":"Matrixware helmet - silver green"}
+,{"id":"90093","name":"150 $DEFY Cyber Stars Voucher"}
+,{"id":"40014","name":"Solid helmet - silver pink"}
+,{"id":"90097","name":"Cyber Star Shard A"}
+,{"id":"90122","name":"EoU Circuit Board (B)"}
+,{"id":"30008","name":"Ducted Fans C1"}
+,{"id":"90099","name":"Cyber Star Shard C"}
+,{"id":"90127","name":"EoU Data Drive Components Crate"}
+,{"id":"20005","name":"Blueprint: Arc Reactor C1"}
+,{"id":"30029","name":"Balanced Drone Chassis"}
+,{"id":"90096","name":"Cyber Star Shard Crate"}
+,{"id":"90102","name":"Cyber Star"}
+,{"id":"20010","name":"Blueprint: Gimbal Thruster Jets C1"}
+,{"id":"90123","name":"EoU Power Supply (C)"}
+,{"id":"76000","name":"Santa Claus"}
+,{"id":"30009","name":"Ducted Fans C2"}
+,{"id":"90012","name":"Blueprint: Golden Crate"}
+,{"id":"30001","name":"Lithium Polymer Cell C2"}
+,{"id":"42015","name":"Sleek Visor - gold green"}
+,{"id":"90044","name":"Battle Pass: Cyber Quest"}
+,{"id":"20036","name":"Blueprint: Beacon Mk I Max"}
+,{"id":"50003","name":"Epic Crate"}
+,{"id":"90116","name":"750 $DEFY Echoes of the Unknown Voucher (Locked)"}
+,{"id":"90119","name":"750 $DEFY Echoes of the Unknown Voucher"}
+,{"id":"50009","name":"Pure Metal Case"}
+,{"id":"95000","name":"Happy Holidays Gift Box"}
+,{"id":"70028","name":"Grenade"}
+,{"id":"75005","name":"Cyber Raiders Mystery Card"}
+,{"id":"5003","name":"Mask Repair Kit"}
+,{"id":"90038","name":"C1 Tactical Drone Crate"}
+,{"id":"20032","name":"Blueprint: Pure Metal"}
+,{"id":"50007","name":"Advanced Crate"}
+,{"id":"90065","name":"$5 Voucher"}
+,{"id":"56000","name":"Battle Pass: Season 0"}
+,{"id":"90039","name":"C2 Tactical Drone Crate"}
+,{"id":"91096","name":"ジャックポット#1　ヒント 97/100 - Jackpot #1 Clue 97/100"}
+,{"id":"40016","name":"Squadron helmet - gold pink"}
+,{"id":"90126","name":"EoU Data Drive"}
+,{"id":"20033","name":"Blueprint: Lithium Polymer Cell C3"}
+,{"id":"40006","name":"Psycircuit helmet - gold pink"}
+,{"id":"41016","name":"Ventilated mouth - gold pink"}
+,{"id":"70019","name":"Cyber Soldier"}
+,{"id":"90028","name":"Mocaverse Partner Key - Mocaverse パートナー　キー"}
+,{"id":"40005","name":"Psycircuit helmet - gold green"}
+,{"id":"90009","name":"Golden Crate Case"}
+,{"id":"90023","name":"$5 Voucher - $5 引換券"}
+,{"id":"52001","name":"Beacon Mk II Max"}
+,{"id":"20006","name":"Blueprint: Arc Reactor C2"}
+,{"id":"41015","name":"Ventilated mouth - gold green"}
+,{"id":"90068","name":"1500 $DEFY Voucher"}
+,{"id":"30005","name":"Arc Reactor C1"}
+,{"id":"20011","name":"Blueprint: Gimbal Thruster Jets C2"}
+,{"id":"70005","name":"Digital Spy"}
+,{"id":"30010","name":"Gimbal Thruster Jets C1"}
+,{"id":"70026","name":"Guard"}
+,{"id":"90017","name":"Epic Cyber Box"}
+,{"id":"42001","name":"Full HUD Visor - gold pink"}
+,{"id":"90055","name":"Reward Box"}
+,{"id":"90095","name":"2500 $DEFY Cyber Stars Voucher"}
+,{"id":"55002","name":"Season 0 - Team qu4rtz"}
+,{"id":"30034","name":"Ducted Fans - Class 3"}
+,{"id":"20013","name":"Blueprint: Maglev Repulsors C1"}
+,{"id":"90008","name":"Ancient Artifact"}
+,{"id":"80000","name":"DRAGON Sphere"}
+,{"id":"30011","name":"Gimbal Thruster Jets C2"}
+,{"id":"100001","name":"Balanced Drone Chassis - Artifact Edition"}
+,{"id":"30006","name":"Arc Reactor C2"}
+,{"id":"20034","name":"Blueprint: Ducted Fans C3"}
+,{"id":"100000","name":"Balanced Drone Chassis - Limited Edition"}
+,{"id":"30033","name":"Lithium Polymer Cell - Class 3"}
+,{"id":"75006","name":"Rare Cyber Raiders Mystery Card"}
+,{"id":"30013","name":"Maglev Repulsors C1"}
+,{"id":"51010","name":"$DEFY Packet (5000)"}
+,{"id":"90001","name":"Artifact Base"}
+,{"id":"90013","name":"Golden Crate"}
+,{"id":"70004","name":"Tech Hacker"}
+,{"id":"76001","name":"Santa Claus DX"}
+,{"id":"51000","name":"Chip Packet (39,000)"}
+,{"id":"90047","name":"Intel Box"}
+,{"id":"100007","name":"2.4Ghz Radio C1 - Gloss Red"}
+,{"id":"90069","name":"15000 $DEFY Voucher"}
+,{"id":"100004","name":"Lithium Polymer Cell C2 - Gloss Red"}
+,{"id":"100010","name":"Ducted Fans C2 - Gloss Red"}
+,{"id":"100013","name":"Balanced Chassis - Gloss Red"}
+,{"id":"91056","name":"ジャックポット#1　ヒント 57/100 - Jackpot #1 Clue 57/100"}
+,{"id":"56003","name":"Battle Pass: Echoes of the Unknown"}
+,{"id":"110000","name":"Naoking Beacon Art"}
+,{"id":"100002","name":"Lithium Polymer Cell C2 - Gloss Teal"}
+,{"id":"100003","name":"Lithium Polymer Cell C2 - Matte Army Green"}
+,{"id":"100005","name":"2.4Ghz Radio C1 - Gloss Teal"}
+,{"id":"100006","name":"2.4Ghz Radio C1 - Matte Army Green"}
+,{"id":"100008","name":"Ducted Fans C2 - Gloss Teal"}
+,{"id":"100009","name":"Ducted Fans C2 - Matte Army Green"}
+,{"id":"100011","name":"Balanced Chassis - Gloss Teal"}
+,{"id":"100012","name":"Balanced Chassis - Matte Army Green"}
+,{"id":"10006","name":"Plutonium"}
+,{"id":"10007","name":"Glass"}
+,{"id":"2","name":"Resource Scanner - Level 1"}
+,{"id":"30002","name":"Nuclear Fuel Rod C1"}
+,{"id":"30003","name":"Nuclear Fuel Rod C2"}
+,{"id":"30004","name":"Nuclear Fuel Rod C3"}
+,{"id":"30007","name":"Arc Reactor C3"}
+,{"id":"30012","name":"Gimbal Thruster Jets C3"}
+,{"id":"30014","name":"Maglev Repulsors C2"}
+,{"id":"30015","name":"Maglev Repulsors C3"}
+,{"id":"30017","name":"2.4Ghz Radio C2"}
+,{"id":"30018","name":"Laserlink Communicator C1"}
+,{"id":"30019","name":"Laserlink Communicator C2"}
+,{"id":"30020","name":"Laserlink Communicator C3"}
+,{"id":"30021","name":"Quantum Entangulator C1"}
+,{"id":"30022","name":"Quantum Entangulator C2"}
+,{"id":"30023","name":"Quantum Entangulator C3"}
+,{"id":"30025","name":"FSMD System on Chip C2"}
+,{"id":"30026","name":"HFO Analog Chipset C3"}
+,{"id":"30027","name":"KLM Quantum 2e APU C4"}
+,{"id":"4","name":"Personal EMP - Level 1"}
+,{"id":"40004","name":"Matrixware helmet - silver pink"}
+,{"id":"40009","name":"Psycircuit helmet - silver pink"}
+,{"id":"41002","name":"Botic mouth - pink silver"}
+,{"id":"41018","name":"Ventilated mouth - silver green"}
+,{"id":"42002","name":"Full HUD Visor - pink silver"}
+,{"id":"42003","name":"Full HUD Visor - silver green"}
+,{"id":"42016","name":"Sleek Visor - gold pink"}
+,{"id":"42018","name":"Sleek Visor - silver green"}
+,{"id":"42019","name":"Sleek Visor - silver pink"}
+,{"id":"50001","name":"Uncommon Crate"}
+,{"id":"50002","name":"Rare Crate"}
+,{"id":"50004","name":"Crafting Crate"}
+,{"id":"50005","name":"Welcome Crate"}
+,{"id":"51001","name":"Chip Packet (80,500)"}
+,{"id":"51002","name":"Chip Packet (229,000)"}
+,{"id":"51003","name":"Chip Packet (1,500)"}
+,{"id":"51004","name":"Chip Packet (8,250)"}
+,{"id":"52003","name":"Beacon Mk I God"}
+,{"id":"55000","name":"Team Swap"}
+,{"id":"55001","name":"Season 0 - Team zer0"}
+,{"id":"56001","name":"Battle Pass: Cyber Raiders"}
+,{"id":"56002","name":"Battle Pass: Cyber Stars"}
+,{"id":"70002","name":"Green Hat"}
+,{"id":"70003","name":"Tech Support"}
+,{"id":"70010","name":"Crypto Hacker"}
+,{"id":"70012","name":"Bionic Hacker"}
+,{"id":"70017","name":"Combat Medic"}
+,{"id":"70025","name":"Intimidator"}
+,{"id":"90006","name":"Unknown Data Drive"}
+,{"id":"90011","name":"Golden Digital Key"}
+,{"id":"90018","name":"Special Cyber Box"}
+,{"id":"90020","name":"Jackpot Cyber Box"}
+,{"id":"90021","name":"Mocaverse Partner Box - Mocaverse パートナーボックス"}
+,{"id":"90024","name":"$50 Voucher - $50 引換券"}
+,{"id":"90025","name":"$500 Voucher - $500 引換券"}
+,{"id":"90026","name":"$1000 Voucher - $1000 引換券"}
+,{"id":"90027","name":"$10000 Voucher - $10000 引換券"}
+,{"id":"90029","name":"Blueprint: Mocaverse Key - 設計図: Mocaverse キー"}
+,{"id":"90031","name":"DEFY T-Shirt Voucher - DEFY Tシャツ引換券"}
+,{"id":"90037","name":"Interop Box - ランダムNFTボックス"}
+,{"id":"90041","name":"Cyber Quest Key Crate"}
+,{"id":"90042","name":"Cyber Quest Key Case"}
+,{"id":"90046","name":"Welcome Raffle Ticket"}
+,{"id":"90053","name":"$100 Voucher - $100 引換券"}
+,{"id":"90057","name":"ApeFest Reward Fragment"}
+,{"id":"90058","name":"Team Battle Season 0 Reward Box"}
+,{"id":"90060","name":"$100 Voucher"}
+,{"id":"90070","name":"Cyber Raiders Key x50 Crate"}
+,{"id":"90071","name":"Cyber Raiders Key x500 Crate"}
+,{"id":"90072","name":"Cyber Raiders Key x5000 Crate"}
+,{"id":"90074","name":"Moca Voucher"}
+,{"id":"90075","name":"Cyber Raiders Key Box"}
+,{"id":"90076","name":"Cyber Raiders Key Box (x3)"}
+,{"id":"90077","name":"Cyber Raiders Key Box (x5)"}
+,{"id":"90078","name":"Cyber Raiders Key Box (x10)"}
+,{"id":"90080","name":"150 $DEFY Voucher (Locked)"}
+,{"id":"90086","name":"Cyber Stars Key"}
+,{"id":"90090","name":"150 $DEFY Cyber Stars Voucher (Locked)"}
+,{"id":"90093","name":"150 $DEFY Cyber Stars Voucher"}
+,{"id":"90094","name":"750 $DEFY Cyber Stars Voucher"}
+,{"id":"90100","name":"Cyber Star Shard D"}
+,{"id":"90101","name":"Cyber Star Shard E"}
+,{"id":"90103","name":"Cyber Star Box"}
+,{"id":"90104","name":"Cyber Stars Key Crate"}
+,{"id":"90105","name":"Cyber Stars Key Crate (x3)"}
+,{"id":"90106","name":"Cyber Stars Key Crate (x5)"}
+,{"id":"90107","name":"Cyber Stars Key Crate (x10)"}
+,{"id":"90110","name":"Cyber Star Shard Crate (Locked)"}
+,{"id":"90117","name":"2500 $DEFY Echoes of the Unknown Voucher (Locked)"}
+,{"id":"90120","name":"2500 $DEFY Echoes of the Unknown Voucher"}
+,{"id":"90128","name":"EoU Data Drive Box"}
+,{"id":"91000","name":"ジャックポット#1　ヒント 1/100 - Jackpot #1 Clue 1/100"}
+,{"id":"91001","name":"ジャックポット#1　ヒント 2/100 - Jackpot #1 Clue 2/100"}
+,{"id":"91002","name":"ジャックポット#1　ヒント 3/100 - Jackpot #1 Clue 3/100"}
+,{"id":"91003","name":"ジャックポット#1　ヒント 4/100 - Jackpot #1 Clue 4/100"}
+,{"id":"91004","name":"ジャックポット#1　ヒント 5/100 - Jackpot #1 Clue 5/100"}
+,{"id":"91005","name":"ジャックポット#1　ヒント 6/100 - Jackpot #1 Clue 6/100"}
+,{"id":"91006","name":"ジャックポット#1　ヒント 7/100 - Jackpot #1 Clue 7/100"}
+,{"id":"91007","name":"ジャックポット#1　ヒント 8/100 - Jackpot #1 Clue 8/100"}
+,{"id":"91008","name":"ジャックポット#1　ヒント 9/100 - Jackpot #1 Clue 9/100"}
+,{"id":"91009","name":"ジャックポット#1　ヒント 10/100 - Jackpot #1 Clue 10/100"}
+,{"id":"91010","name":"ジャックポット#1　ヒント 11/100 - Jackpot #1 Clue 11/100"}
+,{"id":"91011","name":"ジャックポット#1　ヒント 12/100 - Jackpot #1 Clue 12/100"}
+,{"id":"91012","name":"ジャックポット#1　ヒント 13/100 - Jackpot #1 Clue 13/100"}
+,{"id":"91013","name":"ジャックポット#1　ヒント 14/100 - Jackpot #1 Clue 14/100"}
+,{"id":"91014","name":"ジャックポット#1　ヒント 15/100 - Jackpot #1 Clue 15/100"}
+,{"id":"91015","name":"ジャックポット#1　ヒント 16/100 - Jackpot #1 Clue 16/100"}
+,{"id":"91016","name":"ジャックポット#1　ヒント 17/100 - Jackpot #1 Clue 17/100"}
+,{"id":"91017","name":"ジャックポット#1　ヒント 18/100 - Jackpot #1 Clue 18/100"}
+,{"id":"91018","name":"ジャックポット#1　ヒント 19/100 - Jackpot #1 Clue 19/100"}
+,{"id":"91019","name":"ジャックポット#1　ヒント 20/100 - Jackpot #1 Clue 20/100"}
+,{"id":"91020","name":"ジャックポット#1　ヒント 21/100 - Jackpot #1 Clue 21/100"}
+,{"id":"91021","name":"ジャックポット#1　ヒント 22/100 - Jackpot #1 Clue 22/100"}
+,{"id":"91022","name":"ジャックポット#1　ヒント 23/100 - Jackpot #1 Clue 23/100"}
+,{"id":"91023","name":"ジャックポット#1　ヒント 24/100 - Jackpot #1 Clue 24/100"}
+,{"id":"91024","name":"ジャックポット#1　ヒント 25/100 - Jackpot #1 Clue 25/100"}
+,{"id":"91025","name":"ジャックポット#1　ヒント 26/100 - Jackpot #1 Clue 26/100"}
+,{"id":"91026","name":"ジャックポット#1　ヒント 27/100 - Jackpot #1 Clue 27/100"}
+,{"id":"91027","name":"ジャックポット#1　ヒント 28/100 - Jackpot #1 Clue 28/100"}
+,{"id":"91028","name":"ジャックポット#1　ヒント 29/100 - Jackpot #1 Clue 29/100"}
+,{"id":"91029","name":"ジャックポット#1　ヒント 30/100 - Jackpot #1 Clue 30/100"}
+,{"id":"91030","name":"ジャックポット#1　ヒント 31/100 - Jackpot #1 Clue 31/100"}
+,{"id":"91031","name":"ジャックポット#1　ヒント 32/100 - Jackpot #1 Clue 32/100"}
+,{"id":"91032","name":"ジャックポット#1　ヒント 33/100 - Jackpot #1 Clue 33/100"}
+,{"id":"91033","name":"ジャックポット#1　ヒント 34/100 - Jackpot #1 Clue 34/100"}
+,{"id":"91034","name":"ジャックポット#1　ヒント 35/100 - Jackpot #1 Clue 35/100"}
+,{"id":"91035","name":"ジャックポット#1　ヒント 36/100 - Jackpot #1 Clue 36/100"}
+,{"id":"91036","name":"ジャックポット#1　ヒント 37/100 - Jackpot #1 Clue 37/100"}
+,{"id":"91037","name":"ジャックポット#1　ヒント 38/100 - Jackpot #1 Clue 38/100"}
+,{"id":"91038","name":"ジャックポット#1　ヒント 39/100 - Jackpot #1 Clue 39/100"}
+,{"id":"91039","name":"ジャックポット#1　ヒント 40/100 - Jackpot #1 Clue 40/100"}
+,{"id":"91040","name":"ジャックポット#1　ヒント 41/100 - Jackpot #1 Clue 41/100"}
+,{"id":"91041","name":"ジャックポット#1　ヒント 42/100 - Jackpot #1 Clue 42/100"}
+,{"id":"91042","name":"ジャックポット#1　ヒント 43/100 - Jackpot #1 Clue 43/100"}
+,{"id":"91043","name":"ジャックポット#1　ヒント 44/100 - Jackpot #1 Clue 44/100"}
+,{"id":"91044","name":"ジャックポット#1　ヒント 45/100 - Jackpot #1 Clue 45/100"}
+,{"id":"91045","name":"ジャックポット#1　ヒント 46/100 - Jackpot #1 Clue 46/100"}
+,{"id":"91046","name":"ジャックポット#1　ヒント 47/100 - Jackpot #1 Clue 47/100"}
+,{"id":"91047","name":"ジャックポット#1　ヒント 48/100 - Jackpot #1 Clue 48/100"}
+,{"id":"91048","name":"ジャックポット#1　ヒント 49/100 - Jackpot #1 Clue 49/100"}
+,{"id":"91049","name":"ジャックポット#1　ヒント 50/100 - Jackpot #1 Clue 50/100"}
+,{"id":"91050","name":"ジャックポット#1　ヒント 51/100 - Jackpot #1 Clue 51/100"}
+,{"id":"91051","name":"ジャックポット#1　ヒント 52/100 - Jackpot #1 Clue 52/100"}
+,{"id":"91052","name":"ジャックポット#1　ヒント 53/100 - Jackpot #1 Clue 53/100"}
+,{"id":"91053","name":"ジャックポット#1　ヒント 54/100 - Jackpot #1 Clue 54/100"}
+,{"id":"91054","name":"ジャックポット#1　ヒント 55/100 - Jackpot #1 Clue 55/100"}
+,{"id":"91055","name":"ジャックポット#1　ヒント 56/100 - Jackpot #1 Clue 56/100"}
+,{"id":"91057","name":"ジャックポット#1　ヒント 58/100 - Jackpot #1 Clue 58/100"}
+,{"id":"91058","name":"ジャックポット#1　ヒント 59/100 - Jackpot #1 Clue 59/100"}
+,{"id":"91059","name":"ジャックポット#1　ヒント 60/100 - Jackpot #1 Clue 60/100"}
+,{"id":"91060","name":"ジャックポット#1　ヒント 61/100 - Jackpot #1 Clue 61/100"}
+,{"id":"91061","name":"ジャックポット#1　ヒント 62/100 - Jackpot #1 Clue 62/100"}
+,{"id":"91062","name":"ジャックポット#1　ヒント 63/100 - Jackpot #1 Clue 63/100"}
+,{"id":"91063","name":"ジャックポット#1　ヒント 64/100 - Jackpot #1 Clue 64/100"}
+,{"id":"91064","name":"ジャックポット#1　ヒント 65/100 - Jackpot #1 Clue 65/100"}
+,{"id":"91065","name":"ジャックポット#1　ヒント 66/100 - Jackpot #1 Clue 66/100"}
+,{"id":"91066","name":"ジャックポット#1　ヒント 67/100 - Jackpot #1 Clue 67/100"}
+,{"id":"91067","name":"ジャックポット#1　ヒント 68/100 - Jackpot #1 Clue 68/100"}
+,{"id":"91068","name":"ジャックポット#1　ヒント 69/100 - Jackpot #1 Clue 69/100"}
+,{"id":"91069","name":"ジャックポット#1　ヒント 70/100 - Jackpot #1 Clue 70/100"}
+,{"id":"91070","name":"ジャックポット#1　ヒント 71/100 - Jackpot #1 Clue 71/100"}
+,{"id":"91071","name":"ジャックポット#1　ヒント 72/100 - Jackpot #1 Clue 72/100"}
+,{"id":"91072","name":"ジャックポット#1　ヒント 73/100 - Jackpot #1 Clue 73/100"}
+,{"id":"91073","name":"ジャックポット#1　ヒント 74/100 - Jackpot #1 Clue 74/100"}
+,{"id":"91074","name":"ジャックポット#1　ヒント 75/100 - Jackpot #1 Clue 75/100"}
+,{"id":"91075","name":"ジャックポット#1　ヒント 76/100 - Jackpot #1 Clue 76/100"}
+,{"id":"91076","name":"ジャックポット#1　ヒント 77/100 - Jackpot #1 Clue 77/100"}
+,{"id":"91077","name":"ジャックポット#1　ヒント 78/100 - Jackpot #1 Clue 78/100"}
+,{"id":"91078","name":"ジャックポット#1　ヒント 79/100 - Jackpot #1 Clue 79/100"}
+,{"id":"91079","name":"ジャックポット#1　ヒント 80/100 - Jackpot #1 Clue 80/100"}
+,{"id":"91080","name":"ジャックポット#1　ヒント 81/100 - Jackpot #1 Clue 81/100"}
+,{"id":"91081","name":"ジャックポット#1　ヒント 82/100 - Jackpot #1 Clue 82/100"}
+,{"id":"91082","name":"ジャックポット#1　ヒント 83/100 - Jackpot #1 Clue 83/100"}
+,{"id":"91083","name":"ジャックポット#1　ヒント 84/100 - Jackpot #1 Clue 84/100"}
+,{"id":"91084","name":"ジャックポット#1　ヒント 85/100 - Jackpot #1 Clue 85/100"}
+,{"id":"91085","name":"ジャックポット#1　ヒント 86/100 - Jackpot #1 Clue 86/100"}
+,{"id":"91086","name":"ジャックポット#1　ヒント 87/100 - Jackpot #1 Clue 87/100"}
+,{"id":"91087","name":"ジャックポット#1　ヒント 88/100 - Jackpot #1 Clue 88/100"}
+,{"id":"91088","name":"ジャックポット#1　ヒント 89/100 - Jackpot #1 Clue 89/100"}
+,{"id":"91089","name":"ジャックポット#1　ヒント 90/100 - Jackpot #1 Clue 90/100"}
+,{"id":"91090","name":"ジャックポット#1　ヒント 91/100 - Jackpot #1 Clue 91/100"}
+,{"id":"91091","name":"ジャックポット#1　ヒント 92/100 - Jackpot #1 Clue 92/100"}
+,{"id":"91092","name":"ジャックポット#1　ヒント 93/100 - Jackpot #1 Clue 93/100"}
+,{"id":"91093","name":"ジャックポット#1　ヒント 94/100 - Jackpot #1 Clue 94/100"}
+,{"id":"91094","name":"ジャックポット#1　ヒント 95/100 - Jackpot #1 Clue 95/100"}
+,{"id":"91095","name":"ジャックポット#1　ヒント 96/100 - Jackpot #1 Clue 96/100"}
+,{"id":"91097","name":"ジャックポット#1　ヒント 98/100 - Jackpot #1 Clue 98/100"}
+,{"id":"91098","name":"ジャックポット#1　ヒント 99/100 - Jackpot #1 Clue 99/100"}
+,{"id":"91099","name":"ジャックポット#1　ヒント 100/100 - Jackpot #1 Clue 100/100"}
+,{"id":"91100","name":"20% Team Point Boost"}
+,{"id":"99997","name":"Intel"}
+];
+
+    const apiurl = 'https://api.polygonscan.com/api?module=account&action=token1155tx&address=0xB98d07c826302760344D7b004d59b13B099AC4bf&startblock=0&endblock=99999999&page=1&offset=100&sort=desc&apikey=AV5VAVIK1ZPRGRTZCY16XVFJKZ6IKGHSEF';
+
+    const colinfo = [
+      { colid: 'tokenName', colnm: '種別' }
+      , { colid: 'tokenID', colnm: '収集品' ,callback: (x) => { 
+        var i = M_DefyLoot.find(data => data.id === x);
+        return i === undefined ? ["[",x,"]"].join('') : ["[",x,"]",i.name].join(''); 
+      }
+      }
+      , { colid: 'tokenValue', colnm: '個数' }
+      , {
+        colid: 'timeStamp', colnm: '日時', callback: (x) => {
+          var d = new Date(x * 1000);
+          return `${d.getFullYear()}-${(d.getMonth() + 1).toString().padStart(2, '0')}-${d.getDate().toString().padStart(2, '0')} ${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}:${d.getSeconds().toString().padStart(2, '0')}`.replace(/\n|\r/g, '');
+        }
+      }
+    ]
+
+    //画面読み込み後
+    document.addEventListener("DOMContentLoaded", (event) => {
+      getListData();
+      var btnReflesh = document.querySelector('#btnReflesh');
+      btnReflesh.addEventListener('click', function () {
+        showLoading();
+        getListData();
+      });
+    })
+
+    function showLoading() {
+      var loading_area = document.querySelector('div#loading_area');
+      loading_area.classList.remove('invisible');
+    }
+    function hideLoadeing() {
+      var loading_area = document.querySelector('div#loading_area');
+      loading_area.classList.add('invisible');
+    }
+    function clearTable() {
+      var targetdom = document.querySelector('#maintable');
+      var childtable = document.querySelector('#maintable > table');
+      if (childtable) {
+        targetdom.removeChild(childtable);
+      }
+    }
+
+    function getListData() {
+      //表示のクリア
+      clearTable();
+      // XMLHttpRequestオブジェクトの作成
+      var request = new XMLHttpRequest();
+      // URLを開く
+      request.open('GET', apiurl, true);
+      // レスポンスが返ってきた時の処理を記述 
+      request.onload = function() {
+        // レスポンスが返ってきた時の処理
+        var targetdom = document.querySelector('#maintable');
+        var table = document.createElement('table');
+        table.classList.add('table');
+        table.classList.add('table-dark');
+        table.classList.add('table-hover');
+ 
+        // ヘッダー部分生成
+        var thead = document.createElement('thead');
+        var tr = document.createElement('tr');
+        colinfo.forEach(function (r) {
+          var th = document.createElement('th')
+          th.innerText = r.colnm;
+          tr.appendChild(th);
+        });
+        thead.appendChild(tr);
+        thead.classList.add('sticky-top');
+        table.appendChild(thead);
+
+        // データ部分生成
+        var tbody = document.createElement('tbody');
+        JSON.parse(this.response).result.forEach(
+          function (s) {
+            var tr = document.createElement('tr');
+            colinfo.forEach(function (r) {
+              var td = document.createElement('td')
+              td.innerText = r.callback === undefined ? s[r.colid] : r.callback(s[r.colid]);
+              tr.appendChild(td);
+            });
+            tbody.appendChild(tr);
+          }
+        );
+        table.appendChild(tbody);
+        targetdom.appendChild(table);
+        hideLoadeing();
+      }
+      // リクエストをURLに送信
+      request.send();
+    } 
+    
+  </script>
+</body>
+
+</html>
